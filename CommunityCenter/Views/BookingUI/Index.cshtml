@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Booking Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Bookings</h2>
+
+<div ng-app="bookingApp" ng-controller="BookingController">
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Hall</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="b in bookings">
+                <td>{{b.BookingId}}</td>
+                <td>{{b.HallName}}</td>
+                <td>{{b.BookingDate | date:'yyyy-MM-dd'}}</td>
+                <td>{{b.Amount}}</td>
+                <td><button ng-click="deleteBooking(b.BookingId)">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Add Booking</h3>
+    <form ng-submit="addBooking()">
+        <label>Hall:</label>
+        <input type="text" ng-model="newBooking.HallName" required /><br />
+
+        <label>Date:</label>
+        <input type="date" ng-model="newBooking.BookingDate" required /><br />
+
+        <label>Amount:</label>
+        <input type="number" ng-model="newBooking.Amount" required /><br />
+
+        <button type="submit">Add Booking</button>
+    </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script src="~/Scripts/app.js"></script>

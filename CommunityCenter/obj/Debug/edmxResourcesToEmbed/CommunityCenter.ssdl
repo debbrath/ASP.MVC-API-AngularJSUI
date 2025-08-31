@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CommunityCenterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Bookings">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VenuId" Type="int" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
+    <Property Name="EndDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar" MaxLength="100" />
+    <Property Name="UserId" Type="int" />
+  </EntityType>
+  <EntityType Name="ChartOfAccounts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ParentAccountId" Type="int" />
+  </EntityType>
+  <EntityType Name="JournalEntries">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EntryDate" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" />
+    <Property Name="ReferenceNo" Type="nvarchar" MaxLength="100" />
+    <Property Name="Posted" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="JournalEntryLines">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JournalEntryId" Type="int" Nullable="false" />
+    <Property Name="AccountId" Type="int" Nullable="false" />
+    <Property Name="Debit" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Credit" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Narration" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="Payments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BookingId" Type="int" Nullable="false" />
+    <Property Name="PaidAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PaymentDate" Type="datetime" Nullable="false" />
+    <Property Name="PaymentMethod" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsAdvance" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="Venu">
+    <Key>
+      <PropertyRef Name="VenuId" />
+    </Key>
+    <Property Name="VenuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Capacity" Type="int" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <Association Name="FK__Bookings__VenuId__32E0915F">
+    <End Role="Venu" Type="Self.Venu" Multiplicity="1" />
+    <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Venu">
+        <PropertyRef Name="VenuId" />
+      </Principal>
+      <Dependent Role="Bookings">
+        <PropertyRef Name="VenuId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ChartOfAc__Paren__3C69FB99">
+    <End Role="ChartOfAccounts" Type="Self.ChartOfAccounts" Multiplicity="0..1" />
+    <End Role="ChartOfAccounts1" Type="Self.ChartOfAccounts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChartOfAccounts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ChartOfAccounts1">
+        <PropertyRef Name="ParentAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__JournalEn__Accou__4316F928">
+    <End Role="ChartOfAccounts" Type="Self.ChartOfAccounts" Multiplicity="1" />
+    <End Role="JournalEntryLines" Type="Self.JournalEntryLines" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChartOfAccounts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="JournalEntryLines">
+        <PropertyRef Name="AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__JournalEn__Journ__4222D4EF">
+    <End Role="JournalEntries" Type="Self.JournalEntries" Multiplicity="1" />
+    <End Role="JournalEntryLines" Type="Self.JournalEntryLines" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="JournalEntries">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="JournalEntryLines">
+        <PropertyRef Name="JournalEntryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Payments__Bookin__37A5467C">
+    <End Role="Bookings" Type="Self.Bookings" Multiplicity="1" />
+    <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bookings">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payments">
+        <PropertyRef Name="BookingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CommunityCenterModelStoreContainer">
+    <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChartOfAccounts" EntityType="Self.ChartOfAccounts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="JournalEntries" EntityType="Self.JournalEntries" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="JournalEntryLines" EntityType="Self.JournalEntryLines" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Venu" EntityType="Self.Venu" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Bookings__VenuId__32E0915F" Association="Self.FK__Bookings__VenuId__32E0915F">
+      <End Role="Venu" EntitySet="Venu" />
+      <End Role="Bookings" EntitySet="Bookings" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ChartOfAc__Paren__3C69FB99" Association="Self.FK__ChartOfAc__Paren__3C69FB99">
+      <End Role="ChartOfAccounts" EntitySet="ChartOfAccounts" />
+      <End Role="ChartOfAccounts1" EntitySet="ChartOfAccounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__JournalEn__Accou__4316F928" Association="Self.FK__JournalEn__Accou__4316F928">
+      <End Role="ChartOfAccounts" EntitySet="ChartOfAccounts" />
+      <End Role="JournalEntryLines" EntitySet="JournalEntryLines" />
+    </AssociationSet>
+    <AssociationSet Name="FK__JournalEn__Journ__4222D4EF" Association="Self.FK__JournalEn__Journ__4222D4EF">
+      <End Role="JournalEntries" EntitySet="JournalEntries" />
+      <End Role="JournalEntryLines" EntitySet="JournalEntryLines" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Payments__Bookin__37A5467C" Association="Self.FK__Payments__Bookin__37A5467C">
+      <End Role="Bookings" EntitySet="Bookings" />
+      <End Role="Payments" EntitySet="Payments" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
