@@ -1,12 +1,16 @@
-ASP.NET MVC API with AngularJs System
+# ASP.NET MVC API with AngularJs System
 
 A booking system for community halls with ASP.NET MVC Web API backend and AngularJS frontend.
 
-Project Overview
+<br/>
+
+## Project Overview
 
 This system allows managing community center hall bookings through a RESTful API with a user-friendly AngularJS UI.
 
-Technologies Used
+<br/>
+
+## Technologies
 
 ASP.NET MVC Web API (Visual Studio 2015)
 
@@ -16,7 +20,10 @@ AngularJS 1.x
 
 SQL Server 2014
 
-Project Structure
+<br/>
+
+## Project Structure
+```
 CommunityCenterBookingSystem/
 │
 ├── CommunityCenterBookingSystem.sln          # Visual Studio solution file
@@ -39,7 +46,11 @@ CommunityCenterBookingSystem/
 │
 └── README.md                                # This file
 
-Features
+```
+
+<br/>
+
+## Features
 
 View bookings calendar/list
 
@@ -51,7 +62,9 @@ Simple ledger and billing tracking (planned)
 
 JSON and XML response formats supported
 
-Getting Started
+<br/>
+
+## Getting Started
 Prerequisites
 
 Visual Studio 2015+
@@ -84,7 +97,22 @@ GET	/api/bookings/{id}	Get booking by ID
 POST	/api/bookings	Create new booking
 PUT	/api/bookings/{id}	Update existing booking
 DELETE	/api/bookings/{id}	Delete a booking
-Usage
+
+## 🚪 API 
+```
+| Method | Endpoint     | Description                                                  |
+|--------|--------------|--------------------------------------------------------------|
+| GET    | /bookings    | List all bookings                          |
+| GET    | /bookings    | Create new booking         |
+| GET    | /bookings/{id}     | Update existing booking         |
+| POST   | /bookings/{id}     | Delete a booking         |
+
+
+```
+<br/>
+
+
+## Usage
 
 Open AngularJS UI in browser.
 
@@ -105,6 +133,4 @@ Invalid date format: Send dates as ISO strings (.toISOString() in JS).
 
 Model validation errors: Check API error messages and logs.
 
-License
 
-MIT License — see LICENSE file.
